@@ -24,7 +24,7 @@ ENV PATH="/root/.local/bin:$PATH"
 
 RUN mkdir /modeling
 COPY configs /modeling/configs
-COPY ML_GEO_CORE_PUBLIC /modeling/modeling/
+COPY MLGEOCORE_PUBLIC /modeling/modeling/
 COPY apps /modeling/apps/
 
 COPY poetry.lock pyproject.toml /modeling/

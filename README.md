@@ -35,11 +35,11 @@ The structure of each folder builds off of meta's fvcore https://github.com/face
 - **Registry:** Feature that lets us register and access classes by their names.
 - **Base File:** Each folder contains a `base.py` file with an abstract base class (e.g., a base model).
 
-This structure allows for easy implementation and flexible tuning of any data type, model architecture, cross validator, and other parts of the library. Modeling in our library is powered by experiment configuration files (.yaml) e.g.,[experiment_configs/first_experiment.yaml](https://github.com/Zanskar-Geothermal/ml_geo_core_public/blob/0af1ae46f82aec268396f194675e4ec3bf89da2a/experiment_configs/first_experiment.yaml#L1), which control data and model inputs. 
+This structure allows for easy implementation and flexible tuning of any data type, model architecture, cross validator, and other parts of the library. Modeling in our library is powered by experiment configuration files (.yaml) e.g.,[experiment_configs/first_experiment.yaml](https://github.com/Zanskar-Geothermal/mlgeocore_public/blob/0af1ae46f82aec268396f194675e4ec3bf89da2a/experiment_configs/first_experiment.yaml#L1), which control data and model inputs. 
 
 Any experiments are based on the design of these files. The config system uses Facebook’s [fvcore CfgNode](https://github.com/facebookresearch/fvcore/blob/main/fvcore/common/config.py) class, which itself relies on yet another configuration system [YACS](https://github.com/rbgirshick/yacs).
 
- Each element of the config file is defined in the default file [config/defaults.py](https://github.com/Zanskar-Geothermal/ml_geo_core_public/blob/0af1ae46f82aec268396f194675e4ec3bf89da2a/modeling/config/defaults.py#L1). If a parameter is not defined in the input yaml file, the default value will be used.
+ Each element of the config file is defined in the default file [config/defaults.py](https://github.com/Zanskar-Geothermal/mlgeocore_public/blob/0af1ae46f82aec268396f194675e4ec3bf89da2a/modeling/config/defaults.py#L1). If a parameter is not defined in the input yaml file, the default value will be used.
 
 ## Project Structure
 
@@ -280,7 +280,7 @@ If you have a snowflake account to connect to, export your snowflake user name a
 - `export SNOWFLAKE_WAREHOUSE=...` 
 
 
-For info on customizing the snowflake connection see [modeling/utils/snowflake.py](https://github.com/Zanskar-Geothermal/ml_geo_core_public/blob/855f50252e896e2b6658936cb6b717078bd144ed/modeling/utils/snowflake.py#L1)
+For info on customizing the snowflake connection see [modeling/utils/snowflake.py](https://github.com/Zanskar-Geothermal/mlgeocore_public/blob/855f50252e896e2b6658936cb6b717078bd144ed/modeling/utils/snowflake.py#L1)
 
 
 ## Pre-Commit

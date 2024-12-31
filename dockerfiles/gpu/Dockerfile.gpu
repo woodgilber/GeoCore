@@ -46,7 +46,7 @@ RUN apt-get update && apt-get -y install google-cloud-cli
 RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="/root/.local/bin:$PATH"
 COPY configs /modeling/configs
-COPY ML_GEO_CORE_PUBLIC /modeling/modeling/
+COPY MLGEOCORE_PUBLIC /modeling/modeling/
 COPY apps /modeling/apps/
 
 COPY pyproject.toml /modeling/
