@@ -12,7 +12,7 @@ This repository is designed to be a light weight core library for common and ess
 
 We encourage you to cite references to this code as: 
 
-`Hossler, T., Smith, C., Lipscomb, J., Morrison, R., and Grujic, O. (2024). An efficient and scalable framework to optimize geospatial machine learning. PROCEEDINGS, 50th Workshop on Geothermal Reservoir Engineering Stanford University, Stanford, California, February 10-12, 2025 SGP-TR-229`
+`Smith, C., Hossler, T.,  Lipscomb, J., Morrison, R., and Grujic, O. (2024). An efficient and scalable framework to optimize geospatial machine learning. PROCEEDINGS, 50th Workshop on Geothermal Reservoir Engineering Stanford University, Stanford, California, February 10-12, 2025 SGP-TR-229`
 
 We welcome feedback, bug reports and code contributions from third parties.
 
@@ -206,9 +206,9 @@ Below are flag requiremnts/options to add to the training module (train.py))[mod
 
 For instance: 
 
-```poetry run train -c ./experiment_configs/lightgbm_gbdt_model_ingenious.yaml -e GEO_CORE -h True -l True``` 
+```poetry run train -c ./experiment_configs/lightgbm_gbdt_model_ingenious.yaml -e MLGEO_CORE -h True -l True``` 
 
-- will run a model that has an experiment named GEO_CORE
+- will run a model that has an experiment named MLGEO_CORE
 - will called cached data (`-h`)
 - and will not perform any snowflake opeartions (`-l`)
 
