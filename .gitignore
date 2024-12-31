@@ -5,3 +5,4 @@ mlruns/
 
 # Ignore the entire runs/ directory
 runs/
+.DS_Store
