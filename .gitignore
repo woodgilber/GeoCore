@@ -1,0 +1,7 @@
+
+*.pyc
+# Ignore the entire mlruns/ directory
+mlruns/
+
+# Ignore the entire runs/ directory
+runs/
