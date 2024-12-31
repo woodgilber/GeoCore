@@ -50,6 +50,7 @@ gprof2dot = "^2021.2.21"
 
 graphviz = "^0.20.3"
 snakeviz = "^2.2.2"
+click = "^8.1.8"
 [[tool.poetry.source]]
 name = "torch-cpu"
 url = "https://download.pytorch.org/whl/cpu"

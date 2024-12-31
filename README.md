@@ -252,7 +252,7 @@ Run a training job:
 
 We perform experiment tracking using MLFlow. Each developer has his own local MLFlow instance. 
 
-In order to view your experiment, start the mlflow server using `mlflow-ui` in your terminal.
+In order to view your experiment, start the mlflow server using `poetry run mlflow-ui` in your terminal.
 
 This decorator is declared in the toml as
 
