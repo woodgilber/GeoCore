@@ -12,40 +12,9 @@ class Ingenious_Outline_H3Grid(BaseFeatures):
     index_column = "H3_BLOCKS"
     # This is a shapefile we convert into H3
     sql_code = """
-    WITH res6_cells AS (
-        -- Generate resolution 6 H3 cells covering the polygon
-        SELECT 
-            H3_COVERAGE_STRINGS(
-                TO_GEOGRAPHY(CLASS),
-                6
-            ) AS set_of_h3_cells_res6
-        FROM DB_SCRATCH.RAW.INGENIOUS_GRID_EXTENT
-    ),
-    flattened_res6_cells AS (
-        -- Flatten the resolution 6 H3 cells into individual rows
-        SELECT 
-            VALUE AS H3_BLOCK_RES5
-        FROM res6_cells, 
-        LATERAL FLATTEN(input => set_of_h3_cells_res6)
-    ),
-    res8_daughters AS (
-        -- Generate the resolution 8 daughters of each resolution 6 H3 cell
-        SELECT 
-            H3_CELL_TO_CHILDREN_STRING(H3_BLOCK_RES5, 8) AS set_of_h3_cells_res8,
-            H3_BLOCK_RES5
-        FROM flattened_res6_cells
-    ),
-    flattened_res8_cells AS (
-        -- Flatten the resolution 8 H3 cells into individual rows
-        SELECT 
-            VALUE AS H3_BLOCK_RES8,
-            H3_BLOCK_RES5
-        FROM res8_daughters, 
-        LATERAL FLATTEN(input => set_of_h3_cells_res8)
-    )
     SELECT 
-    REPLACE(H3_BLOCK_RES8, '''', '') AS H3_BLOCKS
-    FROM flattened_res8_cells
+    H3_BLOCKS
+    FROM ZANSKAR_SNOWFLAKE_MARKETPLACE.INGENIOUS.INGENIOUS_GRID_EXTENT
     """
 
 
@@ -59,7 +28,7 @@ class Ingenious_Depth_to_Basement(BaseFeatures):
             H3_BLOCKS 
           , D2B_METERS
            FROM      
-           DB_SCRATCH.RAW.DEPTH_TO_BASEMENT_GRID_INGENIOUS
+           ZANSKAR_SNOWFLAKE_MARKETPLACE.INGENIOUS.DEPTH_TO_BASEMENT_GRID_INGENIOUS
     """
 
 
@@ -74,7 +43,7 @@ class Ingenious_CBA_HGM_Gravity(BaseFeatures):
         H3_BLOCKS
       , GRAVITY_HGM
       FROM 
-      DB_SCRATCH.RAW.GRAVITY_HGM_GRID_INGENIOUS
+      ZANSKAR_SNOWFLAKE_MARKETPLACE.INGENIOUS.GRAVITY_HGM_GRID_INGENIOUS
     """
 
 
@@ -89,7 +58,7 @@ class Ingenious_Earthquake_Density_n100a15(BaseFeatures):
         H3_BLOCKS
       , EQ_DENSITY_N100A151
         FROM 
-    DB_SCRATCH.RAW.EARTHQUAKE_DENSITY_N100A15_GRID_INGENIOUS
+    ZANSKAR_SNOWFLAKE_MARKETPLACE.INGENIOUS.EARTHQUAKE_DENSITY_N100A15_GRID_INGENIOUS
       """
 
 
@@ -106,7 +75,7 @@ class Ingenious_MT_Conductance_Layers(BaseFeatures):
       , CONDUCTANCE_MID_CRUST
       , CONDUCTANCE_MANTLE
         FROM
-      DB_SCRATCH.RAW.CONDUCTANCE_GRIDS_INGENIOUS
+      ZANSKAR_SNOWFLAKE_MARKETPLACE.INGENIOUS.CONDUCTANCE_GRIDS_INGENIOUS
       """
 
 
@@ -122,7 +91,7 @@ class Ingenious_Geodetic_Layers(BaseFeatures):
         GEODETIC_DILATION_RATE,
         GEODETIC_SHEAR_RATE       
     FROM
-        DB_SCRATCH.RAW.GEODETIC_GRIDS_INGENIOUS
+        ZANSKAR_SNOWFLAKE_MARKETPLACE.INGENIOUS.GEODETIC_GRIDS_INGENIOUS
      """
 
 
@@ -136,7 +105,7 @@ class Ingenious_Heatflow(BaseFeatures):
         H3_BLOCKS
         , HEATFLOW
         FROM 
-        DB_SCRATCH.RAW.HEATFLOW_GRID_INGENIOUS
+        ZANSKAR_SNOWFLAKE_MARKETPLACE.INGENIOUS.HEATFLOW_GRID_INGENIOUS
     """
 
 
@@ -150,7 +119,7 @@ class Ingenious_RTP_HGM_Magnetic(BaseFeatures):
         H3_BLOCKS
         , MAGNETIC_HGM
         FROM 
-        DB_SCRATCH.RAW.MAGNETIC_RTP_HGM_GRID_INGENIOUS 
+        ZANSKAR_SNOWFLAKE_MARKETPLACE.INGENIOUS.MAGNETIC_RTP_HGM_GRID_INGENIOUS 
     """
 
 
@@ -176,7 +145,7 @@ class Ingenious_Quaternary_Volcanics_Distance(BaseFeatures):
         SELECT DISTINCT
             ROCK_COMP,
             H3_LATLNG_TO_CELL_STRING(LAT, LONG, 8) AS H3_BLOCKS
-        FROM DB_SCRATCH.RAW.GB_VENTS_INGENIOUS
+        FROM ZANSKAR_SNOWFLAKE_MARKETPLACE.INGENIOUS.GB_VENTS_INGENIOUS
         WHERE ROCK_COMP IN ('felsic', 'mafic', 'intermediate')
     ),
     COUNT_CRATERS AS (
@@ -217,12 +186,12 @@ class Ingenious_Fault_Layers(BaseFeatures):
     -- Generate resolution 8 H3 cells covering the polygon
     SELECT 
         H3_COVERAGE_STRINGS(
-            TO_GEOGRAPHY(GEOMETRY),
+            TO_GEOGRAPHY(ST_SETSRID(GEOMETRY, 4326)),
             8
         ) AS set_of_h3_res8,
         SLIPRTNUM,
         RECNUM
-    FROM DB_SCRATCH.RAW.FAULT_GEOMETRY_INGENIOUS
+    FROM ZANSKAR_SNOWFLAKE_MARKETPLACE.INGENIOUS.FAULT_GEOMETRY_INGENIOUS
 ),
 flattened_fault_res8 AS (
     -- Flatten the resolution 8 H3 cells into individual rows
