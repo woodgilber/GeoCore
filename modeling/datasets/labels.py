@@ -19,7 +19,7 @@ class Ingenious_Wells_TempC_Labels2(BaseLabels):
             ELSE NULL
         END AS LABEL,
             0 AS WEIGHT
-        FROM DB_SCRATCH.RAW.INGENIOUS_WELL_FEATURES
+        FROM ZANSKAR_SNOWFLAKE_MARKETPLACE.INGENIOUS.INGENIOUS_WELL_FEATURES
         )
     SELECT 
       H3_BLOCKS
