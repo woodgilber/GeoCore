@@ -9,7 +9,7 @@ from cryptography.hazmat.primitives import serialization
 from snowflake.connector.connection import SnowflakeConnection
 
 
-def snowflake_connection(env: str, warehouse: str = "ANALYST_WH") -> SnowflakeConnection:
+def snowflake_connection(env: str) -> SnowflakeConnection:
     """Create snowflake connection using two differents method whether we are using the staging db (local dev) or the
     prod db (ci/cd dev)
 
@@ -27,7 +27,7 @@ def snowflake_connection(env: str, warehouse: str = "ANALYST_WH") -> SnowflakeCo
             password=os.getenv("SNOWFLAKE_PASSWORD"),
             account=os.getenv("SNOWFLAKE_ACCOUNT"),
             role=os.getenv("SNOWFLAKE_ROLE"),
-            warehouse=warehouse,
+            warehouse=os.getenv("SNOWFLAKE_WAREHOUSE"),
             database=os.getenv("SNOWFLAKE_DATABASE"),
             schema=os.getenv("SNOWFLAKE_SCHEMA"),
         )
