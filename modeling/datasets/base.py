@@ -42,7 +42,7 @@ class BaseFeatures(ABC):
     sql_asis = False
     run_checks = True
     database = os.environ.get("SNOWFLAKE_DATABASE", None)
-    schema = "FEATURES"
+    schema = os.environ.get("SNOWFLAKE_SCHEMA", None)
     resolution = None
 
     def __init__(self):
