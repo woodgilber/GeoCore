@@ -3,9 +3,10 @@ from modeling.datasets.build import LABEL_REGISTRY
 
 
 @LABEL_REGISTRY.register()
-class Ingenious_Wells_TempC_Labels2(BaseLabels):
-    table_name = "INGENIOUS_LABELS_"
+class Ingenious_Wells_TempC_Labels(BaseLabels):
+    table_name = "INGENIOUS_LABELS"
     index_column = "H3_BLOCKS"
+    sql_asis = True
     sql_code = """
  WITH ingenious_well_tempC_labels AS (
         SELECT 

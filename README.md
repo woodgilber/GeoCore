@@ -76,12 +76,12 @@ For further details on the contents see the readme's within each folder.
 
 Build the docker image 
 ```
-cd pfa
+cd modeling
 # cpu version
-docker build -f dockerfiles/cpu/Dockerfile -t pfa-image .
+docker build -f dockerfiles/cpu/Dockerfile -t modeling-image .
 
 # gpu version (beta)
-docker build -f dockerfiles/gpu/Dockerfile.gpu -t pfa-image .
+docker build -f dockerfiles/gpu/Dockerfile.gpu -t modeling-image .
 ```
 
 Create the docker container and run the code from within. Using the GPU version is recommended

@@ -31,7 +31,6 @@ _C.sql_parameters.params = CfgNode()
 _C.sql_parameters.params.positive_well_depth_threshold = 20
 _C.sql_parameters.params.negative_well_depth_threshold = 400
 _C.sql_parameters.params.pred_score_threshold = 0.9
-_C.sql_parameters.params.application_table = "PFA_META_MODEL_3_APPLICATION_SET"
 
 # do not select points that are too close to the test set
 _C.sql_parameters.params.test_buffer = 1000

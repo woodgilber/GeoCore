@@ -238,12 +238,12 @@ def merge_labels(labels: List[BaseFeatures]) -> BaseFeatures:
     query_code = ""
     for i, f in enumerate(labels):
         query_code += (
-            f"""CREATE OR REPLACE TEMPORARY TABLE {os.environ["SNOWFLAKE_DATABASE"]}.FEATURES.label_{i} as ("""
+            f"""CREATE OR REPLACE TEMPORARY TABLE {os.environ["SNOWFLAKE_DATABASE"]}.{os.environ["SNOWFLAKE_SCHEMA"]}.label_{i} as ("""
         )
         query_code += f.sql_code
         query_code += "); \n "
 
-    query_code += f"""CREATE OR REPLACE TEMPORARY TABLE {os.environ["SNOWFLAKE_DATABASE"]}.FEATURES.LABELS as (
+    query_code += f"""CREATE OR REPLACE TEMPORARY TABLE {os.environ["SNOWFLAKE_DATABASE"]}.{os.environ["SNOWFLAKE_SCHEMA"]}.LABELS as (
         with merged_labels as ("""
     for i in range(len(labels)):
         query_code += f"""
@@ -253,7 +253,7 @@ def merge_labels(labels: List[BaseFeatures]) -> BaseFeatures:
             , LABEL
             , TYPE
         FROM
-            {os.environ["SNOWFLAKE_DATABASE"]}.FEATURES.label_{i}
+            {os.environ["SNOWFLAKE_DATABASE"]}.{os.environ["SNOWFLAKE_SCHEMA"]}.label_{i}
         """
         if i < len(labels) - 1:
             query_code += " UNION ALL "

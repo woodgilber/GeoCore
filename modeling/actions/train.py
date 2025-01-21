@@ -129,6 +129,7 @@ def train(
     if not local:
         # Open Snowflake Connection:
         snowflake_database = os.environ["SNOWFLAKE_DATABASE"]
+        schema =  os.environ["SNOWFLAKE_SCHEMA"]
         env = "production" if snowflake_database == "DB_MODELING_PROD" else "staging"
         cnx = snowflake_connection(env)
 
@@ -286,15 +287,15 @@ def train(
                     cnx,
                     applied_outputs,
                     database=snowflake_database,
-                    schema="PFA",
+                    schema=schema,
                     table=table_name,
                     drop=True,
                 )
-                logger.info(f"Results are in table: {snowflake_database}.pfa.{table_name}")
+                logger.info(f"Results are in table: {snowflake_database}.{schema}.{table_name}")
 
                 # process test set
                 if any(cfg["sql_parameters"]["test_data"]):
-                    model.plot_test_diagnostic(cnx, f"{snowflake_database}.pfa.{table_name}", RUN_FOLDER)
+                    model.plot_test_diagnostic(cnx, f"{snowflake_database}.{schema}.{table_name}", RUN_FOLDER)
 
         mlflow.log_artifact(RUN_FOLDER)
         logger.info("Metrics, errors and artifacts all logged.")

@@ -34,7 +34,7 @@ class Ingenious_Depth_to_Basement(BaseFeatures):
 
 @FEATURES_REGISTRY.register()
 class Ingenious_CBA_HGM_Gravity(BaseFeatures):
-    table_name = "GRAVITY_HGM_GRID_INGENIOUS_RESOLUTION_8_"
+    table_name = "GRAVITY_CBA_HGM_GRID_INGENIOUS_RESOLUTION_8"
     index_column = "H3_BLOCKS"
     # This is a raster we sample onto h3 directly
     sql_code = """

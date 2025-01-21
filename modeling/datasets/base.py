@@ -42,7 +42,7 @@ class BaseFeatures(ABC):
     sql_asis = False
     run_checks = True
     database = os.environ.get("SNOWFLAKE_DATABASE", None)
-    schema = "FEATURES"
+    schema = os.environ.get("SNOWFLAKE_SCHEMA", None)
     resolution = None
 
     def __init__(self):
@@ -216,6 +216,5 @@ class BaseLabels(BaseFeatures):
             "H3_BLOCKS" not in selected_columns
             or "LABEL" not in selected_columns
             or "WEIGHT" not in selected_columns
-            # or "TYPE" not in selected_columns
         ):
-            raise ValueError(f"Label {self.__class__.__name__} should output H3_BLOCKS, LABEL, WEIGHT and TYPE")
+            raise ValueError(f"Label {self.__class__.__name__} should output H3_BLOCKS, LABEL, and WEIGHT")
