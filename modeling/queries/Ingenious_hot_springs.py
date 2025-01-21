@@ -10,12 +10,12 @@ INGENIOUS_HOT_SPRINGS = """
       )
     SELECT DISTINCT
         hot_springs.H3_BLOCKS,
-        pfa_table.score as PRED,
+        prediction_table.score as PRED,
         1 as LABEL
     FROM
         hot_springs
     INNER JOIN
-        {APPLICATION_SET_TABLE} as pfa_table
+        {APPLICATION_SET_TABLE} as prediction_table
     ON 
-        hot_springs.H3_BLOCKS = pfa_table.H3_BLOCKS
+        hot_springs.H3_BLOCKS = prediction_table.H3_BLOCKS
 """

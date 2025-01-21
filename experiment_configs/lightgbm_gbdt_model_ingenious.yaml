@@ -14,7 +14,7 @@ sql_parameters:
   first_table: Ingenious_Outline_H3Grid
 # Label dataset used in training/testing model
   labels: 
-    - Ingenious_Wells_TempC_Labels2
+    - Ingenious_Wells_TempC_Labels
 # Label Column
   label_column: LABEL
 # Meta columns used for plotting 
