@@ -9,7 +9,6 @@ from .base import BinaryClassifier
 from .build import MODEL_REGISTRY
 
 # Set up logging
-# logger = logging.getLogger("pfa")
 
 # Set MLflow tracking URI to a local directory
 mlflow.set_tracking_uri("file://" + os.path.abspath("./mlruns"))

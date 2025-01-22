@@ -170,8 +170,8 @@ def sql_join_script(
                     LEFT JOIN
                         test
                     WHERE
-                        ST_DWITHIN(ANALYTICS_TOOLBOX.CARTO.H3_CENTER({train_cte}.{index_column}),
-                                ANALYTICS_TOOLBOX.CARTO.H3_CENTER(test.H3_INDEX), {test_buffer})
+                        ST_DWITHIN(H3_CELL_TO_POINT({train_cte}.{index_column}),
+                                H3_CELL_TO_POINT(test.H3_INDEX), {test_buffer})
                 )
                 """
 
@@ -181,7 +181,7 @@ def sql_join_script(
             query = f"""
                 SELECT
                     all_data.*
-                    , ANALYTICS_TOOLBOX.CARTO.H3_CENTER(all_data.H3_BLOCKS) as H3_CENTER
+                    , H3_CELL_TO_POINT(all_data.H3_BLOCKS) as H3_CENTER
                     , ST_X(H3_CENTER) as LONGITUDE
                     , ST_Y(H3_CENTER) as LATITUDE
                     , 1 as LABEL
@@ -271,7 +271,7 @@ def merge_labels(labels: List[BaseFeatures]) -> BaseFeatures:
             )
         SELECT
             H3_BLOCKS
-            , ANALYTICS_TOOLBOX.CARTO.H3_CENTER(H3_BLOCKS) as H3_CENTER
+            , H3_CELL_TO_POINT(H3_BLOCKS) as H3_CENTER
             , ST_X(H3_CENTER) as LONGITUDE
             , ST_Y(H3_CENTER) as LATITUDE
             , LABEL
