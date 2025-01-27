@@ -39,8 +39,3 @@ RUN poetry config virtualenvs.create false \
 
 # fix for skopt issue with numpy. 
 RUN sed -i 's/np.int/int/g'  /usr/local/lib/python3.10/site-packages/skopt/space/transformers.py
-COPY entry-point.sh ./entry-point.sh
-
-EXPOSE 8080
-
-ENTRYPOINT ["/usr/bin/env", "bash", "entry-point.sh"]

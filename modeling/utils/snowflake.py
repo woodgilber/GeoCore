@@ -9,50 +9,20 @@ from cryptography.hazmat.primitives import serialization
 from snowflake.connector.connection import SnowflakeConnection
 
 
-def snowflake_connection(env: str) -> SnowflakeConnection:
-    """Create snowflake connection using two differents method whether we are using the staging db (local dev) or the
-    prod db (ci/cd dev)
-
-    Args:
-        env (str): either production or staging.
-        warehouse (str): snowflake warehouse. Default to ANALYST_WH.
+def snowflake_connection() -> SnowflakeConnection:
+    """Create snowflake connection 
 
     Returns:
         SnowflakeConnection: connection to snowflake db
     """
-    if env == "staging":
-        # user needs to set password
-        cnx = snowflake.connector.connect(
-            user=os.getenv("SNOWFLAKE_USER"),
-            password=os.getenv("SNOWFLAKE_PASSWORD"),
-            account=os.getenv("SNOWFLAKE_ACCOUNT"),
-            role=os.getenv("SNOWFLAKE_ROLE"),
-            warehouse=os.getenv("SNOWFLAKE_WAREHOUSE"),
-            database=os.getenv("SNOWFLAKE_DATABASE"),
-            schema=os.getenv("SNOWFLAKE_SCHEMA"),
-        )
-    elif env == "production":
-        # we use a private key for this. The key is contained in a gcp secret (see training-workflow)
-        p_key = serialization.load_pem_private_key(
-            os.environ["PRIVATE_KEY"].encode(),
-            password=os.environ["PRIVATE_KEY_PASSPHRASE"].encode(),
-            backend=default_backend(),
-        )
-
-        pkb = p_key.private_bytes(
-            encoding=serialization.Encoding.DER,
-            format=serialization.PrivateFormat.PKCS8,
-            encryption_algorithm=serialization.NoEncryption(),
-        )
-
-        cnx = snowflake.connector.connect(
-            user=os.getenv("SNOWFLAKE_USER"),
-            account=os.getenv("SNOWFLAKE_ACCOUNT"),
-            private_key=pkb,
-            warehouse=warehouse,
-            database=os.getenv("SNOWFLAKE_DATABASE"),
-            schema=os.getenv("SNOWFLAKE_SCHEMA"),
-        )
+    cnx = snowflake.connector.connect(
+        user=os.getenv("SNOWFLAKE_USER"),
+        password=os.getenv("SNOWFLAKE_PASSWORD"),
+        account=os.getenv("SNOWFLAKE_ACCOUNT"),
+        warehouse="COMPUTE_WH",
+        database="ZANSKAR_SNOWFLAKE_MARKETPLACE_TEST",
+        schema="INGENIOUS"
+    )
     return cnx
 
 

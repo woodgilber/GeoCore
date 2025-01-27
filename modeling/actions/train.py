@@ -128,10 +128,7 @@ def train(
 
     if not local:
         # Open Snowflake Connection:
-        snowflake_database = os.environ["SNOWFLAKE_DATABASE"]
-        schema =  os.environ["SNOWFLAKE_SCHEMA"]
-        env = "production" if snowflake_database == "DB_MODELING_PROD" else "staging"
-        cnx = snowflake_connection(env)
+        cnx = snowflake_connection()
 
     # check if we are training in supervised or unsupervised mode
     if cfg["sql_parameters"]["labels"]:
