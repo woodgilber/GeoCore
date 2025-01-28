@@ -9,7 +9,7 @@ GeoCore is a Python library for geospatial Machine Learning.
 
 
 ## Installation
-### With docker (recommended)
+### With docker 
 
 Build the docker image 
 ```bash
@@ -23,6 +23,8 @@ docker build -f dockerfiles/cpu/Dockerfile -t geocore-cpu .
 2. Create the poetry environment with `poetry install`
 
 ## Usage
+
+### Training
 The commands below allows the user to run an experiment on the [Ingenious dataset](https://gdr.openei.org/submissions/1391).
 
 First, create a [free Snowflake account](https://signup.snowflake.com/) and set the Snowflake parameters:
@@ -37,6 +39,23 @@ Then run an experiment with:
 poetry run train -c experiment_configs/lightgbm_gbdt_model_ingenious.yaml -e experiment_0
 ```
 
+### Experiment tracking
+We perform experiment tracking using MLFlow. Each developer has his own local MLFlow instance. 
+
+In order to view your experiment, start the mlflow server using `poetry run mlflow-ui` in your terminal.
+
+This decorator is declared in the toml as
+
+[`mlflow-ui = "modeling.actions.mlflow_ui:open_mlflow_ui"`]
+
+and will create a UI page hosted at
+```
+"http://localhost:5050"
+```
+Extensive documentation about MLFlow can be found [here](https://mlflow.org/docs/latest/index.html).
+
+- MLflow tracks all models under the provided experiment name.  
+- The run name (e.g., `mad-dog-124`) corresponds to the Snowflake table storing application results.  
 
 
 ## Citing
@@ -58,5 +77,4 @@ Main contributors:
 
 
 ## License
-
 The source code of this project is licensed under the [MIT License](https://opensource.org/license/mit). 
