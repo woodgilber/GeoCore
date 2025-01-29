@@ -1,7 +1,6 @@
 # GeoCore 
 
-#TODO: update the figure
-![plot](misc/mlgeocore_wf.png)
+![plot](misc/GeoCore_Schematic_V2.png)
 
 ## What is GeoCore? 
 
