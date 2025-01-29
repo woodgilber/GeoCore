@@ -19,9 +19,6 @@ def snowflake_connection() -> SnowflakeConnection:
         user=os.getenv("SNOWFLAKE_USER"),
         password=os.getenv("SNOWFLAKE_PASSWORD"),
         account=os.getenv("SNOWFLAKE_ACCOUNT"),
-        warehouse="COMPUTE_WH",
-        database="ZANSKAR_SNOWFLAKE_MARKETPLACE_TEST",
-        schema="INGENIOUS"
     )
     return cnx
 
