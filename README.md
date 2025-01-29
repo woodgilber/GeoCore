@@ -43,7 +43,7 @@ poetry run train -c experiment_configs/lightgbm_gbdt_model_ingenious.yaml -e exp
 ```
 
 ### Experiment tracking
-We perform experiment tracking using MLFlow. Each developer has his own local MLFlow instance. 
+We perform experiment tracking using MLFlow. Each developer has their own local MLFlow instance. 
 
 In order to view your experiment, start the mlflow server using `poetry run mlflow-ui` in your terminal.
 
@@ -66,7 +66,7 @@ Extensive documentation about MLFlow can be found [here](https://mlflow.org/docs
 
 We encourage you to cite references to this code as: 
 
-`Smith, C., Hossler, T.,  Lipscomb, J., Morrison, R., and Grujic, O. (2024). An efficient and scalable framework to optimize geospatial machine learning. PROCEEDINGS, 50th Workshop on Geothermal Reservoir Engineering Stanford University, Stanford, California, February 10-12, 2025 SGP-TR-229`
+`Grujic, O., Hossler, T.,  Lipscomb, J., Morrison, R.A., and Smith, C.M. (2025). An efficient and scalable framework to optimize geospatial machine learning. PROCEEDINGS, 50th Workshop on Geothermal Reservoir Engineering Stanford University, Stanford, California, February 10-12, 2025 SGP-TR-229`
 
 We welcome feedback, bug reports and code contributions from third parties.
 
