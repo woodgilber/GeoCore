@@ -1,9 +1,8 @@
 [tool.poetry]
-name = "ml-geo-core-public"
+name = "geocore"
 version = "0.1.0"
-description = "The ml geo core"
+description = "GeoCore library"
 authors = ["Zanskar ML Team"]
-license = "Zanskar proprietary code. All rights reserved."
 readme = "README.md"
 packages = [{include = "modeling"}]
 

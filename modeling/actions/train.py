@@ -109,6 +109,9 @@ def train(
         profile (bool): train a model and profile the results using Cprofiler
         local (bool): skip Snowflake operations if True
     """
+    snowflake_database = os.environ.get("SNOWFLAKE_DATABASE")
+    schema = os.environ.get("SNOWFLAKE_SCHEMA")
+
     # Ensure -h (cache) is True if -l (local) is True
     if local and not cache:
         logger.error("The '--cache' option must be True when '--local' is True.")
@@ -128,10 +131,7 @@ def train(
 
     if not local:
         # Open Snowflake Connection:
-        snowflake_database = os.environ["SNOWFLAKE_DATABASE"]
-        schema =  os.environ["SNOWFLAKE_SCHEMA"]
-        env = "production" if snowflake_database == "DB_MODELING_PROD" else "staging"
-        cnx = snowflake_connection(env)
+        cnx = snowflake_connection()
 
     # check if we are training in supervised or unsupervised mode
     if cfg["sql_parameters"]["labels"]:
@@ -282,7 +282,7 @@ def train(
             )
 
             if not local:
-                table_name = f'{experiment_name}_{run_id.replace("-", "_").upper()}_APPLICATION_SET'
+                table_name = f'{experiment_name}_{run_id}_APPLICATION_SET'.replace("-", "_").upper()
                 upload_to_snowflake(
                     cnx,
                     applied_outputs,
