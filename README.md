@@ -23,12 +23,15 @@ docker build -f dockerfiles/cpu/Dockerfile -t geocore-cpu .
 2. Create the poetry environment with `poetry install`
 
 ## Usage
+### Storage
+First, create a [free Snowflake account](https://signup.snowflake.com/). The features, labels and model predictions are stored in Snowflake. Before running a training, a database and schema must be created in Snowflake. 
 
 ### Training
 The commands below allows the user to run an experiment on the [Ingenious dataset](https://gdr.openei.org/submissions/1391).
 
-First, create a [free Snowflake account](https://signup.snowflake.com/) and set the Snowflake parameters:
 ```bash
+export SNOWFLAKE_DATABASE=XXX # use the name of the database created above
+export SNOWFLAKE_SCHEMA=XXX # use the name of the schema created above
 export SNOWFLAKE_USER=XXX
 export SNOWFLAKE_PASSWORD=XXX
 export SNOWFLAKE_ACCOUNT=XXX # find value here https://docs.snowflake.com/en/user-guide/gen-conn-config#using-sql-statements-to-find-your-account-identifier
