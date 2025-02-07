@@ -23,10 +23,12 @@ docker build -f dockerfiles/cpu/Dockerfile -t geocore-cpu .
 
 ## Usage
 ### Storage
-First, create a [free Snowflake account](https://signup.snowflake.com/). The features, labels and model predictions are stored in Snowflake. Before running a training, a database and schema must be created in Snowflake. 
+First, create a [free Snowflake account](https://signup.snowflake.com/). The features, labels and model predictions are stored in Snowflake. Before running a training, a database and schema must be created in Snowflake.
+
+To use the example [INGENIOUS dataset](https://gdr.openei.org/submissions/1391) in Snowflake, you can add the dataset to your Snowflake account through Snowflake Marketplace: [INGENIOUS Great Basin Geothermal Data with Zanskar Processing](https://app.snowflake.com/marketplace/listing/GZ2FQZGRBHD/zanskar-geothermal-minerals-ingenious-great-basin-geothermal-data-with-zanskar-processing)
 
 ### Training
-The commands below allows the user to run an experiment on the [Ingenious dataset](https://gdr.openei.org/submissions/1391).
+The commands below allows the user to run an experiment on the [INGENIOUS dataset](https://gdr.openei.org/submissions/1391).
 
 ```bash
 export SNOWFLAKE_DATABASE=XXX # use the name of the database created above
