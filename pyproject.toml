@@ -11,7 +11,7 @@ python = "^3.10"
 numpy = "1.24.2"
 pandas = "2.0.3"
 scikit-learn = "1.4.0"
-lightgbm = "3.3.5"
+lightgbm = {file = "./lightgbm-4.6.0-py3-none-macosx_12_0_arm64.whl" }
 colorlog = "^6.8.2"
 fvcore = "0.1.5.post20221221"
 h3 = "3.7.6"

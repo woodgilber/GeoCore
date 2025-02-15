@@ -9,4 +9,4 @@ runs/
 
 .venv
 snowflake_creds.sh
-lightgbm-4.6.0-py3-none-macosx_12_0_arm64.whl
+*.whl
