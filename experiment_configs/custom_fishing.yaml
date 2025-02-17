@@ -1,0 +1,6 @@
+# Training run on fishing data
+n_iter : [30]
+max_depth : [2, 4, 6]
+max_nodes : [40, 24, 16]
+optimizer : ['adam']
+activation : ['relu']
