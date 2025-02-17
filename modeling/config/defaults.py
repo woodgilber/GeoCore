@@ -20,7 +20,7 @@ _C.sql_parameters.labels = ["Ingenious_Wells_TempC_Labels"]
 _C.sql_parameters.meta_labels = []
 _C.sql_parameters.label_column = "LABEL"
 _C.sql_parameters.meta_columns = ["H3_CENTER"]
-_C.sql_parameters.test_data = ["IngeniousHotSprings"]
+_C.sql_parameters.test_data = []
 # Observation weights:
 _C.sql_parameters.weights_column = None
 

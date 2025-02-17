@@ -203,7 +203,7 @@ class BaseLabels(BaseFeatures):
 
     def __init__(self):
         super().__init__()
-        self._check_sql()
+        # self._check_sql()
 
     def _check_sql(self) -> None:
         # I asked chatgpt for this.... Find the last "select ... from" statement

@@ -2,6 +2,7 @@ import logging
 import os
 from collections import Counter
 from typing import List, Optional, Tuple
+import pdb
 
 import pandas as pd
 from fvcore.common.config import CfgNode
@@ -323,6 +324,7 @@ def build_dataset(
     for table in feature_instances + test_instances:
         table.run_sql(cnx, cfg.params)
 
+    pdb.set_trace()
     # check resolutions
     # TODO: check resolution on test instances too. I am getting some None resolutions for some reason
     resolutions = {f"{type(table).__name__}": table.resolution for table in feature_instances}
@@ -338,6 +340,7 @@ def build_dataset(
                 bad_resolutions.append(v)
         raise ValueError(f"Tables {bad_tables} are using different resolutions: {bad_resolutions}")
 
+    pdb.set_trace()
     # Get Table columns and properties etc.
     df = pd.concat([feature_props(f, cnx) for f in feature_instances])
     first_table = cfg["first_table"]
