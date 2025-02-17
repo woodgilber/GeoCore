@@ -10,3 +10,4 @@ runs/
 .venv
 snowflake_creds.sh
 *.whl
+*.parquet
