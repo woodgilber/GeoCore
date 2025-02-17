@@ -1,0 +1,59 @@
+run_description: Training run on fishing data
+# This is where we define the feature dataset
+sql_parameters:
+  features: 
+    - speed
+    - heading
+    - latitude
+    - longitude
+    - distance_from_coast
+# Label dataset used in training/testing model
+  labels: 
+    - fishing
+# Label Column
+  label_column: LABEL
+# Meta columns used for plotting 
+  meta_columns:
+    - H3_PARENT
+    - H3_CENTER
+    - LONGITUDE
+    - LATITUDE
+    - WEIGHT
+    - TYPE
+# Custom parameters allowing for dynamic feature/label designs
+  params:
+    positive_well_depth_threshold: 10
+    negative_well_depth_threshold: 150
+# Model specs - model type, base parameters for optimization
+model: 
+  name: LGBMBinaryClassifier
+  lightgbm:
+    model_params:
+      verbose : -1
+      boosting_type: 'gbdt'
+    optim_params:
+      verbose: 0
+      n_iter : 30
+      scoring: "roc_auc"
+      search_spaces:
+        max_depth : [2, 8, 'uniform']
+        num_leaves : [2, 512, 'uniform']
+        min_child_samples : [15, 100, 'uniform']
+        learning_rate : [0.001, 0.2,'log-uniform']
+        n_estimators : [100, 120, 'uniform']
+        colsample_bytree : [0.2, 0.6, 'uniform']
+        subsample :  [0.2, 0.6, 'uniform']
+        subsample_freq :  [1, 7, 'uniform']
+        reg_alpha :  [0.00000001, 1.0, 'log-uniform']
+        reg_lambda :  [0.00000001, 1.0, 'log-uniform']
+# Cross validation specs - type and specs for # of splits, buffering, cluster distances
+  cross_validator: BlockCV
+  cross_validator_parameters: 
+   nx : 4
+   ny : 2
+   n_folds: 8
+   buffer : 10
+   clustering_distance: 50
+
+
+
