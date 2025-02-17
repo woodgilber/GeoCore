@@ -5,9 +5,11 @@ mlruns/
 
 # Ignore the entire runs/ directory
 runs/
+logs/
 .DS_Store
 
 .venv
 snowflake_creds.sh
 *.whl
 *.parquet
+*.npz
