@@ -340,7 +340,6 @@ def build_dataset(
                 bad_resolutions.append(v)
         raise ValueError(f"Tables {bad_tables} are using different resolutions: {bad_resolutions}")
 
-    pdb.set_trace()
     # Get Table columns and properties etc.
     df = pd.concat([feature_props(f, cnx) for f in feature_instances])
     first_table = cfg["first_table"]
