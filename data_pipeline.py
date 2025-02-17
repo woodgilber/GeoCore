@@ -43,7 +43,22 @@ df.reset_index(drop=True, inplace=True)
 df.dropna(inplace=True)
 gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df['longitude'], df['latitude']), crs="EPSG:4326")
 gdf["distance_from_coast"] = gdf["geometry"].apply(lambda x: min(x.distance(coastline) for coastline in world["geometry"]))
-df = gdf[['mmsi','vessel_class','timestamp_utc','speed', 'heading', 'latitude', 'longitude', 'distance_from_coast', 'fishing']]
+
+def change_in_speed(x):
+    return x.max() - x.min()
+
+df_deltav = []
+for mmsi, df_group in gdf[["mmsi","timestamp_utc","speed"]].groupby("mmsi"):
+    df_resampled = df_group.resample("1h", on="timestamp_utc").apply(change_in_speed).dropna(axis=0)
+    df_resampled['mmsi'] = mmsi
+    df_resampled.reset_index(inplace=True)
+    df_resampled.rename(columns={"speed":"change_in_speed","timestamp_utc":"rounded_hours"}, inplace=True)
+    df_deltav.append(df_resampled)
+
+df_deltav = pd.concat(df_deltav, ignore_index=True)
+gdf["merging_hour"] = gdf["timestamp_utc"].dt.floor('H')
+gdf = gdf.merge(df_deltav, left_on=["mmsi","merging_hour"], right_on=["mmsi","rounded_hours"])
+df = gdf[['mmsi','vessel_class','timestamp_utc','speed', 'heading', 'latitude', 'longitude', 'distance_from_coast', 'change_in_speed','fishing']]
 
 logging.info("Retrieving Snowflake credentials")
 try:
@@ -67,10 +82,7 @@ scs.execute('USE WAREHOUSE geocore_warehouse')
 scs.execute('USE DATABASE fishing_db')
 scs.execute('USE SCHEMA fishing_schema')
 sql = ("CREATE OR REPLACE TABLE fishing_raw_data"
-       " (mmsi integer, vessel_class string, timestamp_utc timestamp_ntz, speed float, heading float, latitude float, longitude float, distance_from_coast float, fishing integer)")
-scs.execute(sql)
-sql = ("CREATE OR REPLACE TABLE fishing_raw_aggregated"
-       " (mmsi integer, vessel_class string, timestamp_utc timestamp_ntz, speed float, heading float, latitude float, longitude float, distance_from_coast float, fishing integer)")
+       " (mmsi integer, vessel_class string, timestamp_utc timestamp_ntz, speed float, heading float, latitude float, longitude float, distance_from_coast float, change_in_speed float, fishing integer)")
 scs.execute(sql)
 
 logging.info("Inserting data")
@@ -79,11 +91,6 @@ logging.info("Inserting data")
 df["timestamp_utc"] = df["timestamp_utc"].dt.strftime('%Y-%m-%d %H:%M:%S')
 table_rows = str(list(df.itertuples(index=False, name=None))).replace('[','').replace(']','')
 scs.execute(f"INSERT INTO fishing_raw_data VALUES {table_rows}") 
-
-# sql = "SELECT * FROM fishing_raw_data LIMIT 10"
-# scs.execute(sql)
-# for row in scs.fetchall():
-#     print(row)
 
 sql = "SELECT COUNT(fishing) FROM fishing_raw_data"
 scs.execute(sql)
