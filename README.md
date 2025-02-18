@@ -1,34 +1,21 @@
-# GeoCore 
+# Machine Learning model for vessel activity
 
-![plot](misc/GeoCore_Schematic_V2.png)
-
-## What is GeoCore? 
-
-GeoCore is a Python library for geospatial Machine Learning.
-
+This repo serves as my submission for the Global Fishing Watch project. While I had originally begun with the GeoCore framework, I realized that a large amount of it is hardcoded to specifically work with only the INGENIOUS data set. Instead of parsing through all of the files I decided to start over using tensorflow. I attemped to keep in the spirit of GeoCore though, still using Snowflake to store the data and an ML visualization tool (tensorboard, discussed below) to monitor the experiments. A yaml file is still used to select hyperparameters to test. Because it is intended to work in a similar way, the initial setup is very similar.
 
 ## Installation
-### With docker 
-
-Build the docker image 
-```bash
-docker build -f dockerfiles/cpu/Dockerfile -t geocore-cpu .
-```
-
-### Without docker
+### Without poetry
 
 1. Install [poetry](https://python-poetry.org/docs/#installation)
 
 2. Create the poetry environment with `poetry install`
 
 ## Usage
+### Exploratory Data Analysis
+
+The EDA.ipynb walks through my initial exploration of the provided data. This includes verifying the cleanliness of the dataset, inspecting the values, and testing out some transformations for the pipeline.
+
 ### Storage
-First, create a [free Snowflake account](https://signup.snowflake.com/). The features, labels and model predictions are stored in Snowflake. Before running a training, a database and schema must be created in Snowflake.
-
-To use the example [INGENIOUS dataset](https://gdr.openei.org/submissions/1391) in Snowflake, you can add the dataset to your Snowflake account through Snowflake Marketplace: [INGENIOUS Great Basin Geothermal Data with Zanskar Processing](https://app.snowflake.com/marketplace/listing/GZ2FQZGRBHD/zanskar-geothermal-minerals-ingenious-great-basin-geothermal-data-with-zanskar-processing)
-
-### Training
-The commands below allows the user to run an experiment on the [INGENIOUS dataset](https://gdr.openei.org/submissions/1391).
+First, create a [free Snowflake account](https://signup.snowflake.com/). While using these scripts there is an assumption that you will have setup your environment variables to enable Snowflake access. I did this with a bash script, but did not commit it this repo as it contains my login credentials. However, it looks generally like this:
 
 ```bash
 export SNOWFLAKE_DATABASE=XXX # use the name of the database created above
@@ -38,38 +25,39 @@ export SNOWFLAKE_PASSWORD=XXX
 export SNOWFLAKE_ACCOUNT=XXX # find value here https://docs.snowflake.com/en/user-guide/gen-conn-config#using-sql-statements-to-find-your-account-identifier
 ```
 
-Then run an experiment with:
+And can be called with `source snowflake_creds.sh`. To upload the data from the trawlers file (store separately) you call the data_pipline script as follows.
+
 ```bash
-poetry run train -c experiment_configs/lightgbm_gbdt_model_ingenious.yaml -e experiment_0
+python data_pipeline.py --data pth/to/parquet
 ```
+
+There is an optional `--shoreline` argument to change the shape file used to calculate the distance to the shoreline if desired.
+
+### Training
+Once data has been loaded into the database you can then train your models on it. Multiple models can be created based on the parameters in the `experiment_configs/custom_fishing.yaml` file.
+
+To begin the model training run the following command in your terminal:
+```bash
+python modeling.py --params experiment_configs/custom_fishing.yaml --table fishing_raw_data
+```
+
+The table argument should be changed if the table name was changed in the data_pipeline file. This process will save the separated and scaled training, validation, and test data locally, as well as the models and logs for the Tensorboard tracking.
 
 ### Experiment tracking
-We perform experiment tracking using MLFlow. Each developer has their own local MLFlow instance. 
+The experiements are setup to be tracked with Tensorboard. The relevant files are stored locally in the `logs` folder. To view a specific run use the command `tensorboard --logdir 'pth/to/dir'` -- in your terminal. This will promt you to open the following command in your browser:
 
-In order to view your experiment, start the mlflow server using `poetry run mlflow-ui` in your terminal.
-
-This decorator is declared in the toml as
-
-[`mlflow-ui = "modeling.actions.mlflow_ui:open_mlflow_ui"`]
-
-and will create a UI page hosted at
 ```
-"http://localhost:5050"
+"http://localhost:6006"
 ```
-Extensive documentation about MLFlow can be found [here](https://mlflow.org/docs/latest/index.html).
 
-- MLflow tracks all models under the provided experiment name.  
-- The run name (e.g., `mad-dog-124`) corresponds to the Snowflake table storing application results.  
+### Results
 
+A brief summary of the results can be found in the `results.ipynb` notebook. At the beginning I use the model that performed the best for me, but based on randomness and changes to the yaml file you might need to select a different model.
 
 ## Citing
 `GeoCore` was developed by [Zanskar Geothermal and Minerals](https://www.zanskar.com/).
 
-We encourage you to cite references to this code as: 
-
 `Grujic, O., Hossler, T.,  Lipscomb, J., Morrison, R.A., and Smith, C.M. (2025). An efficient and scalable framework to optimize geospatial machine learning. PROCEEDINGS, 50th Workshop on Geothermal Reservoir Engineering Stanford University, Stanford, California, February 10-12, 2025 SGP-TR-229`
-
-We welcome feedback, bug reports and code contributions from third parties.
 
 Main contributors:
 
