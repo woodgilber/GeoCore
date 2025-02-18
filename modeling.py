@@ -144,6 +144,7 @@ def run_model(params: dict, data: list, run_num: str):
         )
 
     loss, accuracy, auc = model.evaluate(test_inputs, test_targets)
+    model.save('models/' + run_name + '_' + dt.datetime.now().strftime("%Y%m%d-%H%M%S") + '.h5')
     logging.info('Accuracy: %.2f' % (accuracy*100))
     logging.info('ROC AUC: %.2f' % (auc))
 
