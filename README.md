@@ -3,16 +3,18 @@
 This repo serves as my submission for the Global Fishing Watch project. While I had originally begun with the GeoCore framework, I realized that a large amount of it is hardcoded to specifically work with only the INGENIOUS data set. Instead of parsing through all of the files I decided to start over using tensorflow. I attemped to keep in the spirit of GeoCore though, still using Snowflake to store the data and an ML visualization tool (tensorboard, discussed below) to monitor the experiments. A yaml file is still used to select hyperparameters to test. Because it is intended to work in a similar way, the initial setup is very similar.
 
 ## Installation
-### Without poetry
+### With poetry
 
 1. Install [poetry](https://python-poetry.org/docs/#installation)
 
 2. Create the poetry environment with `poetry install`
 
+It should be noted that changes were made to the poetry install process. Some of the dependencies for this project were not compatible with my machine (because of Apple Silicon) so it is possible they will have to be reverted for another user.
+
 ## Usage
 ### Exploratory Data Analysis
 
-The EDA.ipynb walks through my initial exploration of the provided data. This includes verifying the cleanliness of the dataset, inspecting the values, and testing out some transformations for the pipeline.
+The `EDA.ipynb` walks through my initial exploration of the provided data. This includes verifying the cleanliness of the dataset, inspecting the values, and testing out some transformations for the pipeline.
 
 ### Storage
 First, create a [free Snowflake account](https://signup.snowflake.com/). While using these scripts there is an assumption that you will have setup your environment variables to enable Snowflake access. I did this with a bash script, but did not commit it this repo as it contains my login credentials. However, it looks generally like this:
@@ -31,20 +33,20 @@ And can be called with `source snowflake_creds.sh`. To upload the data from the 
 python data_pipeline.py --data pth/to/parquet
 ```
 
-There is an optional `--shoreline` argument to change the shape file used to calculate the distance to the shoreline if desired.
+There is an optional `--shoreline` argument to change the shape file used to calculate the distance to the shoreline if desired. One such file is included here (ne_110m_coastline.zip).
 
 ### Training
-Once data has been loaded into the database you can then train your models on it. Multiple models can be created based on the parameters in the `experiment_configs/custom_fishing.yaml` file.
+Once data has been loaded into the database you can then train your models on it. Multiple models can be created based on the parameters in the `experiment_configs/custom_fishing.yaml` file. Inputting hyperparameters that are incompatible with Tensorflow or nonsensical (negative number of layers) will break the training. 
 
 To begin the model training run the following command in your terminal:
 ```bash
 python modeling.py --params experiment_configs/custom_fishing.yaml --table fishing_raw_data
 ```
 
-The table argument should be changed if the table name was changed in the data_pipeline file. This process will save the separated and scaled training, validation, and test data locally, as well as the models and logs for the Tensorboard tracking.
+The table argument should be changed if the table name was changed in the data_pipeline file. This process will save the scaled and separated training, validation, and test data locally, as well as the Tensorflow models and Tensorboard logs.
 
 ### Experiment tracking
-The experiements are setup to be tracked with Tensorboard. The relevant files are stored locally in the `logs` folder. To view a specific run use the command `tensorboard --logdir 'pth/to/dir'` -- in your terminal. This will promt you to open the following command in your browser:
+The experiments are setup to be tracked with Tensorboard. The relevant files are stored locally in the `logs` folder. To view a specific run use the command `tensorboard --logdir 'pth/to/dir'` -- in your terminal. This will prompt you to open the following command in your browser:
 
 ```
 "http://localhost:6006"
@@ -52,7 +54,7 @@ The experiements are setup to be tracked with Tensorboard. The relevant files ar
 
 ### Results
 
-A brief summary of the results can be found in the `results.ipynb` notebook. At the beginning I use the model that performed the best for me, but based on randomness and changes to the yaml file you might need to select a different model.
+A brief summary of the results can be found in the `results.ipynb` notebook. At the beginning of the notebook I load the model that performed the best for me, but based on randomness and changes to the yaml file you might need to select a different model.
 
 ## Citing
 `GeoCore` was developed by [Zanskar Geothermal and Minerals](https://www.zanskar.com/).
