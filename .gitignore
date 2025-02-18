@@ -6,6 +6,7 @@ mlruns/
 # Ignore the entire runs/ directory
 runs/
 logs/
+models/
 .DS_Store
 
 .venv
